@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
 
 import * as Fireworks from 'fireworks-canvas';
-import UIfx from 'uifx'
 
-import fireworksSound from '../sounds/fireworks.mp3';
+import { Howl } from 'howler';
+import fireworksSounds from '../sounds/fireworks.mp3';
 
 const FireworksComponent = () => {
   useEffect(() => {
-    const startSound = new UIfx(
-      fireworksSound,
-      {
-        volume: 1, // number between 0.0 ~ 1.0
-        throttleMs: 100
-      }
-    );
+    const sound = new Howl({
+      src: [fireworksSounds],
+      autoplay: true,
+      loop: true,
+      volume: 1,
+    });
+
     const container = document.querySelector('.container');
     const options = {
       maxRockets: 20, // max # of rockets to spawn
@@ -29,14 +29,9 @@ const FireworksComponent = () => {
     // instantiate the class and call start
     // this returns a disposable - calling it will stop fireworks.
     const fireworks = new Fireworks(container, options);
-
-    startSound.play();
-
-    setInterval(() => {
-      startSound.play();
-    }, 13000);
-
     fireworks.start();
+
+    sound.play();
   }, []);
   return (
     <div className='container' style={ { width: '100%', height: '80vh' } }></div>

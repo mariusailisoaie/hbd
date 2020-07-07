@@ -1,13 +1,23 @@
 import React, { useEffect } from 'react';
 
 import * as Fireworks from 'fireworks-canvas';
+import UIfx from 'uifx'
+
+import fireworksSound from '../sounds/fireworks.mp3';
 
 const FireworksComponent = () => {
   useEffect(() => {
+    const startSound = new UIfx(
+      fireworksSound,
+      {
+        volume: 1, // number between 0.0 ~ 1.0
+        throttleMs: 100
+      }
+    );
     const container = document.querySelector('.container');
     const options = {
       maxRockets: 20, // max # of rockets to spawn
-      rocketSpawnInterval: 150, // millisends to check if new rockets should spawn
+      rocketSpawnInterval: 120, // millisends to check if new rockets should spawn
       numParticles: 100, // number of particles to spawn when rocket explodes (+0-10)
       explosionMinHeight: 0.2, // percentage. min height at which rockets can explode
       explosionMaxHeight: 0.9, // percentage. max height before a particle is exploded
@@ -19,6 +29,13 @@ const FireworksComponent = () => {
     // instantiate the class and call start
     // this returns a disposable - calling it will stop fireworks.
     const fireworks = new Fireworks(container, options);
+
+    startSound.play();
+
+    setInterval(() => {
+      startSound.play();
+    }, 13000);
+
     fireworks.start();
   }, []);
   return (
